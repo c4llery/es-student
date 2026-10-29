@@ -3,7 +3,7 @@ set(PICO_BOARD pico)
 set(PICO_PLATFORM rp2040)
 
 include(pico_sdk_import.cmake)
-project(134_usb-and-button)
+project(133_led-button-usb)
 pico_sdk_init()
 
 add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/main.c)
