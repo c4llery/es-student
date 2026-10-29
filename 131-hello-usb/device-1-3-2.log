@@ -3,15 +3,16 @@
 устройство: 2e8a:000a
 серийный номер: 5303284720AA481C
 порт: /dev/ttyACM0
-начало: 2026-10-29T22:13:32
-   0.382 <-- Hello, world!
-   2.383 <-- Hello, worlHello, world!
-   3.383 <-- Hello, world!
-   4.383 <-- Hello, world!
-   5.383 <-- Hello, world!
-   6.382 <-- Hello, world!
-   7.383 <-- Hello, world!
-   8.383 <-- Hello, world!
-   9.383 <-- Hello, world!
-  10.383 <-- Hello, world!
-итог: принято строк 10 за 10.0 с
+начало: 2026-10-29T22:19:02
+   0.096 <-- Hello, world!
+   1.096 <-- Hello, world!
+   2.096 <-- Hello, world!
+   3.096 <-- Hello, world!
+   4.096 <-- Hello, world!
+   5.096 <-- Hello, world!
+   6.096 <-- Hello, world!
+   7.097 <-- Hello, world!
+   8.096 <-- Hello, world!
+   9.097 <-- Hello, world!
+  10.097 <-- Hello, world!
+итог: принято строк 11 за 10.0 с
