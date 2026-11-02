@@ -52,7 +52,7 @@ int main(){
         bool current = get_button_debounce(BUTTON_PIN);
         if (previous == true && current == false){
             led_toggle();
-            printf("led %s\n", led_is_on() ? "on" : "off");
+            LOG_INF("led %s\n", led_is_on() ? "on" : "off");
         }
         previous = current;
 
