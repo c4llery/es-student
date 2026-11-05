@@ -3,26 +3,26 @@
 устройство: 2e8a:000a
 серийный номер: 5303284720AA481C
 порт: /dev/ttyACM0
-начало: 2026-11-05T11:32:58
+начало: 2026-11-05T11:41:37
    0.000 --> enable
-   0.126 <-- enable
-   0.126 <-- dbg readline:33 got enable
-   0.126 <-- inf handle_command:53 led on
-   2.128 --> disable
-   2.286 <-- disable
-   2.287 <-- dbg readline:33 got disable
-   2.287 <-- inf handle_command:58 led off
-   4.289 --> info
-   4.387 <-- info
-   4.388 <-- dbg readline:33 got info
-   4.388 <-- project: 211-command-usb
-   4.389 <-- repo: https://github.com/c4llery/es-student
-   4.389 <-- board: pico
-   4.389 <-- serial: 5303284720AA481C
-   4.390 <-- chip: manufacturer 0x927, part 0x0002, revision 2
-   4.390 <-- pico_sdk: 2.3.0
-   6.393 --> nosuchcommand
-   6.669 <-- nosuchcommand
-   6.669 <-- dbg readline:33 got nosuchcommand
-   6.669 <-- err handle_command:70 unknown command: nosuchcommand
+   0.137 <-- enable
+   0.138 <-- dbg readline:33 got enable
+   0.138 <-- inf handle_command:53 led on
+   2.141 --> disable
+   2.298 <-- disable
+   2.299 <-- dbg readline:33 got disable
+   2.299 <-- inf handle_command:58 led off
+   4.303 --> info
+   4.399 <-- info
+   4.399 <-- dbg readline:33 got info
+   4.400 <-- project: 211-command-usb
+   4.400 <-- repo: https://github.com/c4llery/es-student
+   4.400 <-- board: pico
+   4.401 <-- serial: 5303284720AA481C
+   4.401 <-- chip: manufacturer 0x927, part 0x0002, revision 2
+   4.401 <-- pico_sdk: 2.3.0
+   6.405 --> nosuchcommand
+   6.680 <-- nosuchcommand
+   6.681 <-- dbg readline:33 got nosuchcommand
+   6.681 <-- err handle_command:70 unknown command: nosuchcommand
 итог: отправлено команд 4, принято строк 17
