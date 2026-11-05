@@ -14,6 +14,31 @@ uint line_length = 0;
 const uint BUTTON_PIN = 15;
 const uint DEBOUNCE_MS = 20;
 
+void handle_command(const char* command)
+{
+    if (strcmp(command, "enable") == 0)
+    {
+        led_set(true);
+        LOG_INF("led %s\n", led_is_on() ? "on" : "off");
+    }
+    else if (strcmp(command, "disable") == 0)
+    {
+        led_set(false);
+        LOG_INF("led %s\n", led_is_on() ? "on" : "off");
+    }
+    else if (strcmp(command, "version") == 0)
+    {
+        log_version();
+    }
+    else if (strcmp(command, "info") == 0)
+    {
+        device_info();
+    }
+    else
+    {
+        LOG_ERR("unknown command: %s\n", command);
+    }
+}
 
 void readline(void)
 {
@@ -45,31 +70,6 @@ void readline(void)
     } 
 }
 
-void handle_command(const char* command)
-{
-    if (strcmp(command, "enable") == 0)
-    {
-        led_set(true);
-        LOG_INF("led %s\n", led_is_on() ? "on" : "off");
-    }
-    else if (strcmp(command, "disable") == 0)
-    {
-        led_set(false);
-        LOG_INF("led %s\n", led_is_on() ? "on" : "off");
-    }
-    else if (strcmp(command, "version") == 0)
-    {
-        log_version();
-    }
-    else if (strcmp(command, "info") == 0)
-    {
-        device_info();
-    }
-    else
-    {
-        LOG_ERR("unknown command: %s\n", command);
-    }
-}
 
 
 bool get_button_debounce(uint pin){
