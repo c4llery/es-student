@@ -60,11 +60,11 @@ void mem_info(void)
     const uint32_t ram_busy = bss_size + data_size;
     const uint32_t stack_size = (unsigned)(&__StackTop - &__StackBottom);
     const uint32_t heap_free_size = (unsigned)(&__HeapLimit - &__bss_end__);
-    printf("total\n");
-    printf("flash image: %8u = boot2 %8u + text %8u + data %8u\n", flash_image_size, boot2_size, text_size, data_size);
-    printf("flash free: %8u of %8u\n", PICO_FLASH_SIZE_BYTES - flash_image_size, PICO_FLASH_SIZE_BYTES);
-    printf("ram used: %8u = data %8u + bss %8u \n", ram_busy, data_size, bss_size);
-    printf("ram free: %8u for heap and %8u for stack\n", heap_free_size, stack_size);
+    printf("\ntotal\n");
+    printf("    flash image   %8u = boot2 %8u + text %8u + data %8u\n", flash_image_size, boot2_size, text_size, data_size);
+    printf("    flash free  %8u of %8u\n", PICO_FLASH_SIZE_BYTES - flash_image_size, PICO_FLASH_SIZE_BYTES);
+    printf("    ram used  %8u = data %8u + bss %8u \n", ram_busy, data_size, bss_size);
+    printf("    ram free  %8u for heap and %8u for stack\n", heap_free_size, stack_size);
     
     // итог: образ во флеш и из чего он сложился
     // итог: свободно во флеш-памяти из всего её объёма
