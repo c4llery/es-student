@@ -1,0 +1,59 @@
+#include "memory.h"
+
+static void row(const char *name, uintptr_t start, uintptr_t end)
+{
+    printf("%-10s 0x%08x 0x%08x %8u\n",
+           name, (unsigned)start, (unsigned)end, (unsigned)(end - start));
+}
+
+void mem_info(void)
+{
+    // шапка таблицы: область, начало, конец, размер
+
+    // flash — XIP_BASE и PICO_FLASH_SIZE_BYTES
+    row("flash", XIP_BASE, (XIP_BASE + PICO_FLASH_SIZE_BYTES));
+
+    // sram — базовый адрес из SDK, размер из datasheet
+    row("sram", SRAM_BASE, SRAM_END);
+    // rom — базовый адрес из SDK, размер из datasheet
+    const uint32_t ROM_SIZE = 16384;
+    row("rom", ROM_BASE, ROM_BASE + ROM_SIZE);
+
+    // image — от __flash_binary_start до __flash_binary_end
+    row("image", (uintptr_t)&__flash_binary_start, (uintptr_t)&__flash_binary_end);
+    // free  — от __flash_binary_end до конца флеш-памяти
+    row("free", (uintptr_t)&__flash_binary_end, ((XIP_BASE + PICO_FLASH_SIZE_BYTES)));
+    // boot2 — от __boot2_start__ до __boot2_end__
+    row("boot2", (uintptr_t)&__boot2_start__, (uintptr_t)&__boot2_end__);
+    // text  — от __boot2_end__ до __etext: код и константы
+    row("text", (uintptr_t)&__boot2_end__, (uintptr_t)&__etext);
+
+    // data flash — хранение .data, от __etext, длиной с .data
+    row("data flash", (uintptr_t)&__etext, (uintptr_t)(&__etext + (&__data_end__ - &__data_start__)));
+    // data ram   — работа .data, от __data_start__ до __data_end__
+    row("data ram", (uintptr_t)&__data_start__, (uintptr_t)&__data_end__);
+    // bss        — от __bss_start__ до __bss_end__
+    row("bss", (uintptr_t)&__bss_start__, (uintptr_t)&__bss_end__);
+    // heap       — от __bss_end__ до __HeapLimit
+    row("heap", (uintptr_t)&__bss_end__, (uintptr_t)&__HeapLimit);
+    // stack      — от __StackBottom до __StackTop
+    row("stack", (uintptr_t)&__StackBottom, (uintptr_t)&__StackTop);
+    const uint32_t boot2_size = (unsigned)(&__boot2_end__ - &__boot2_start__);
+    const uint32_t text_size = (unsigned)(&__etext - &__boot2_end__);
+    const uint32_t data_size = (unsigned)(&__data_end__ - &__data_start__);
+    const uint32_t flash_image_size = boot2_size + text_size + data_size;
+    const uint32_t bss_size = (unsigned)(&__bss_end__ - &__bss_start__);
+    const uint32_t ram_busy = bss_size + data_size;
+    const uint32_t stack_size = (unsigned)(&__StackTop - &__StackBottom);
+    const uint32_t heap_free_size = (unsigned)(&__HeapLimit - &__bss_end__);
+    (unsigned)(&__StackTop - &__StackBottom);
+    printf("flash image: %8u = boot2 %8u + text %8u + data %8u\n", flash_image_size, boot2_size, text_size, data_size);
+    printf("flash free: %8u of %8u\n", PICO_FLASH_SIZE_BYTES - flash_image_size, PICO_FLASH_SIZE_BYTES);
+    printf("ram used: %8u = data %8u + bss %8u \n", ram_busy, data_size, bss_size);
+    printf("ram free: %8u for heap and %8u for stack\n", heap_free_size, stack_size);
+    
+    // итог: образ во флеш и из чего он сложился
+    // итог: свободно во флеш-памяти из всего её объёма
+    // итог: занято в ОЗУ — .data и .bss
+    // итог: свободно в ОЗУ — под кучу и под стек
+}
