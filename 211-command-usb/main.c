@@ -117,7 +117,6 @@ void readline(void)
 }
 
 
-
 bool get_button_debounce(uint pin){
     bool state = gpio_get(pin);
     sleep_ms(DEBOUNCE_MS);
