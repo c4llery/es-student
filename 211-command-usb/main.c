@@ -16,29 +16,29 @@ const uint BUTTON_PIN = 15;
 const uint DEBOUNCE_MS = 20;
 
 
-void cmd_enable()
+void cmd_enable(void)
 {
     led_set(true);
     LOG_INF("led %s\n", led_is_on() ? "on" : "off");
 }
 
-void cmd_disable()
+void cmd_disable(void)
 {
     led_set(false);
     LOG_INF("led %s\n", led_is_on() ? "on" : "off");
 }
 
-void cmd_info()
+void cmd_info(void)
 {
     device_info();
 }
 
-void cmd_version()
+void cmd_version(void)
 {
     log_version();
 }
 
-void cmd_ping()
+void cmd_ping(void)
 {
     printf("pong\n");
 }
@@ -135,14 +135,6 @@ int main(){
         previous = current;
 
         readline();
-        // int command = getchar_timeout_us(0);
-
-        // if (command == PICO_ERROR_TIMEOUT)
-        // {
-        //     continue;
-        // }
-        // // LOG_DBG("got %c\n", command);
-        // handle_command(command);
     }
 
 }
