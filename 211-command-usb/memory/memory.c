@@ -1,5 +1,18 @@
 #include "memory.h"
 
+extern char __flash_binary_start;
+extern char __flash_binary_end;
+extern char __boot2_start__;
+extern char __boot2_end__;
+extern char __etext;
+extern char __data_start__;
+extern char __data_end__;
+extern char __bss_start__;
+extern char __bss_end__;
+extern char __HeapLimit;
+extern char __StackBottom;
+extern char __StackTop;
+
 static void row(const char *name, uintptr_t start, uintptr_t end)
 {
     printf("%-10s 0x%08x 0x%08x %8u\n",
@@ -9,6 +22,7 @@ static void row(const char *name, uintptr_t start, uintptr_t end)
 void mem_info(void)
 {
     // шапка таблицы: область, начало, конец, размер
+    printf("%-10s %-10s %-10s %-8s\n", "area", "start", "end", "size");
 
     // flash — XIP_BASE и PICO_FLASH_SIZE_BYTES
     row("flash", XIP_BASE, (XIP_BASE + PICO_FLASH_SIZE_BYTES));
@@ -46,7 +60,6 @@ void mem_info(void)
     const uint32_t ram_busy = bss_size + data_size;
     const uint32_t stack_size = (unsigned)(&__StackTop - &__StackBottom);
     const uint32_t heap_free_size = (unsigned)(&__HeapLimit - &__bss_end__);
-    (unsigned)(&__StackTop - &__StackBottom);
     printf("total\n");
     printf("flash image: %8u = boot2 %8u + text %8u + data %8u\n", flash_image_size, boot2_size, text_size, data_size);
     printf("flash free: %8u of %8u\n", PICO_FLASH_SIZE_BYTES - flash_image_size, PICO_FLASH_SIZE_BYTES);
