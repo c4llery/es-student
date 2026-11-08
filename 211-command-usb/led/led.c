@@ -5,11 +5,16 @@ const uint LED_PIN = 25;
 
 static bool led_state = false;
 
-void led_init(void) // эту функцию отслеживать внимательно! 
+void led_init(void) 
 {
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
     led_set(false);
+}
+
+uint led_pin(void)
+{
+    return LED_PIN;
 }
 
 void led_set(bool on)

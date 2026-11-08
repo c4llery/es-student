@@ -2,6 +2,8 @@
 #include "command.h"
 #include <stdlib.h>
 #include "device.h"
+#include "led.h"
+#define VECTOR_TABLE 0x10000100
 
 extern char __flash_binary_start;
 extern char __flash_binary_end;
@@ -38,6 +40,22 @@ static void row_for_commands_without_value(const char *name, uint16_t* start)
 
 uint32_t data_variable = 100;
 uint32_t bss_variable;
+
+void boot_info(void)
+{
+    const uint32_t *vectors = (const uint32_t *)VECTOR_TABLE;
+    uint32_t stack_top = vectors[0];
+    uint32_t reset_handler = vectors[1];
+    volatile uint32_t *gpio_in= (uint32_t *)(SIO_BASE + SIO_GPIO_IN_OFFSET);
+    uint32_t level = (*gpio_in >> led_pin()) & 1u;
+    printf("%-13s 0x%08x\n", "vector table", VECTOR_TABLE);
+    printf("%-13s 0x%08x\n", "stack_top", stack_top);
+    printf("%-13s 0x%08x\n", "reset", reset_handler);
+    printf("%-13s 0x%08x\n", "reset (even)", reset_handler & ~1u);
+    printf("%-13s 0x%08x\n", "gpio in", gpio_in);
+    printf("%-13s %u\n", "led bit", level);
+    printf("%-13s %u\n", "gpio_get", gpio_get(led_pin()));
+}
 
 void fw_info(void)
 {

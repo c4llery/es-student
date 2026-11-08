@@ -1,5 +1,6 @@
 #include "pico/unique_id.h"
 #include "pico/version.h"
+#include "pico/stdlib.h"
 #include "device.h"
 #include <stdio.h>
 #include "hardware/regs/addressmap.h"
@@ -7,6 +8,7 @@
 #include <stddef.h>
 
 struct info_t device_card = {123, DEVICE_NAME, 1};
+
 
 void dev_info(void)
 {
