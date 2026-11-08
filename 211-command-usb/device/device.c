@@ -4,6 +4,57 @@
 #include <stdio.h>
 #include "hardware/regs/addressmap.h"
 #include "hardware/regs/sysinfo.h"
+#include <stddef.h>
+
+
+extern struct info_t device_card;
+
+
+struct info_t
+{
+    uint32_t version;
+    char name[13];
+    uint8_t revision;
+};
+
+struct info_t device_card = {123, DEVICE_NAME, 1};
+
+void dev_info(void)
+{
+    printf("%-10s %-10s %-10s %-10s %-10s\n", "struct", "address", "size", "offset", "value");
+
+    printf("%-13s 0x%08x %5u\n",
+        "device_card",
+        &device_card,
+        sizeof(device_card));
+
+        
+        printf("- %-13s 0x%08x %5u %6u 0x%08x\n",
+            "version",
+            &device_card.version,
+            sizeof(device_card.version),
+            offsetof(struct info_t, version),
+            device_card.version);
+            
+            printf("- %-13s 0x%08x %5u %6u %6s\n",
+                "name",
+                device_card.revision,
+                sizeof(device_card.name),
+                offsetof(struct info_t, name),
+                device_card.name);
+                
+            printf("- %-13s 0x%08x %5u %6u %6u\n",
+                "revision",
+                &device_card.revision,
+                sizeof(device_card.revision),
+                offsetof(struct info_t, revision),
+                device_card.revision);
+            
+            unsigned fields = sizeof(device_card.version) + sizeof(device_card.name) + sizeof(device_card.revision);
+            
+            printf("fields %u, sizeof %u, padding %u\n", fields, sizeof(device_card), sizeof(device_card) - fields);
+                
+}
 
 
 void device_info(void)

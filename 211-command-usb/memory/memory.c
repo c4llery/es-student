@@ -16,6 +16,7 @@ extern char __HeapLimit;
 extern char __StackBottom;
 extern char __StackTop;
 
+
 static void row(const char *name, uintptr_t start, uintptr_t end)
 {
     printf("%-10s 0x%08x 0x%08x %8u\n",
