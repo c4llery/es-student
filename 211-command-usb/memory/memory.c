@@ -49,7 +49,7 @@ void boot_info(void)
     volatile uint32_t *gpio_in= (uint32_t *)(SIO_BASE + SIO_GPIO_IN_OFFSET);
     uint32_t level = (*gpio_in >> led_pin()) & 1u;
     printf("%-13s 0x%08x\n", "vector table", VECTOR_TABLE);
-    printf("%-13s 0x%08x\n", "stack_top", stack_top);
+    printf("%-13s 0x%08x\n", "stack top", stack_top);
     printf("%-13s 0x%08x\n", "reset", reset_handler);
     printf("%-13s 0x%08x\n", "reset (even)", reset_handler & ~1u);
     printf("%-13s 0x%08x\n", "gpio in", gpio_in);
