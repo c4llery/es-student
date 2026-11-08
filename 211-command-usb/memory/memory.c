@@ -57,8 +57,8 @@ void fw_info(void)
     
     
     printf("%-10s %-10s %-10s\n", "object", "adress", "value");
-    printf("%-10s 0x%08x 0x%08x\n", "main", (unsigned)main_code, (unsigned)*main_code);
-    printf("%-10s 0x%08x 0x%08x\n", "fw_info", fw_info_code, *fw_info_code);
+    printf("%-10s 0x%08x 0x%08x\n", "main", (unsigned)(uint16_t *)((uintptr_t)main), (unsigned)*main_code);
+    printf("%-10s 0x%08x 0x%08x\n", "fw_info", (unsigned)(uint16_t *)((uintptr_t)fw_info), *fw_info_code);
     printf("%-10s 0x%08x\n", "commands", commands);
     for (uint i = 0; i < command_count; i++)
     {
