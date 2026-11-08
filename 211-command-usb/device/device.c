@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "hardware/regs/addressmap.h"
 #include "hardware/regs/sysinfo.h"
-
+#include <stddef.h>
 
 struct info_t device_card = {123, DEVICE_NAME, 1};
 
