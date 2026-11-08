@@ -7,4 +7,6 @@
 #define DEVICE_BOARD "unknown"
 #endif
 
+static const char *device_project = DEVICE_PROJECT; 
+static const char *device_board = DEVICE_BOARD; 
 void device_info(void);

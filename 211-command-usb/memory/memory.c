@@ -1,4 +1,7 @@
 #include "memory.h"
+#include "command.h"
+#include <stdlib.h>
+#include "device.h"
 
 extern char __flash_binary_start;
 extern char __flash_binary_end;
@@ -18,6 +21,60 @@ static void row(const char *name, uintptr_t start, uintptr_t end)
     printf("%-10s 0x%08x 0x%08x %8u\n",
            name, (unsigned)start, (unsigned)end, (unsigned)(end - start));
 }
+
+
+static void row_for_commands_with_value(const char *name, uint16_t* start)
+{
+    printf("%-10s 0x%08x 0x%08x\n", 
+        name, (unsigned)start, (unsigned)*start);
+}
+
+static void row_for_commands_without_value(const char *name, uint16_t* start)
+{
+    printf("%-10s 0x%08x\n", 
+        name, (unsigned)start);
+}
+
+uint32_t data_variable = 100;
+uint32_t bss_variable;
+
+void fw_info(void)
+{
+    
+    int main(void);
+    uint16_t *main_code = (uint16_t *)((uintptr_t)main & ~1u); 
+    uint16_t *fw_info_code = (uint16_t *)((uintptr_t)fw_info & ~1u); 
+    data_variable = data_variable + 1;
+    bss_variable = bss_variable + 1;
+    
+    uint32_t stack_variable = 1946;
+    uint32_t *heap_variable = malloc(sizeof(uint32_t));
+    
+    if (heap_variable != NULL)
+    {
+        *heap_variable = 1951;
+    }
+    
+    
+    printf("%-10s %-10s %-10s\n", "object", "adress", "value");
+    printf("%-10s 0x%08x 0x%08x\n", "main", (unsigned)main_code, (unsigned)*main_code);
+    printf("%-10s 0x%08x 0x%08x\n", "fw_info", fw_info_code, *fw_info_code);
+    printf("%-10s 0x%08x\n", "commands", commands);
+    for (uint i = 0; i < command_count; i++)
+    {
+        printf("-  %-10s 0x%08x\n",commands[i].name, commands[i].handler);
+    }
+    
+    printf("%-10s 0x%08x %s\n", "DEVICE_PROJECT", device_project, device_project);
+    printf("%-10s 0x%08x %s\n", "DEVICE_BOARD", device_board, device_board);
+    printf("%-10s 0x%08x %u\n", "data_variable", &data_variable, data_variable);
+    printf("%-10s 0x%08x %u\n", "bss_variable", &bss_variable, bss_variable);
+    printf("%-10s 0x%08x %u\n", "stack_variable", &stack_variable, stack_variable);
+    printf("%-10s 0x%08x %u\n", "heap_variable", heap_variable, *heap_variable);
+    free(heap_variable);
+}
+
+int main(void);
 
 void mem_info(void)
 {
