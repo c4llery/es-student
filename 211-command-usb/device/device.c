@@ -4,18 +4,7 @@
 #include <stdio.h>
 #include "hardware/regs/addressmap.h"
 #include "hardware/regs/sysinfo.h"
-#include <stddef.h>
 
-
-extern struct info_t device_card;
-
-
-struct info_t
-{
-    uint32_t version;
-    char name[13];
-    uint8_t revision;
-};
 
 struct info_t device_card = {123, DEVICE_NAME, 1};
 
