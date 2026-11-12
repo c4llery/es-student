@@ -1,0 +1,63 @@
+задание: 2.2.2
+проект: 221-command-time
+устройство: 2e8a:000a
+серийный номер: 5303284720AA481C
+порт: /dev/ttyACM0
+начало: 2026-11-12T23:03:50
+   0.000 --> uptime
+   0.001 <-- uptime
+   0.001 <-- dbg readline:129 got uptime
+   0.001 <-- uptime: 14067 ms
+   0.402 --> boot_info
+   0.403 <-- boot_info
+   0.403 <-- dbg readline:129 got boot_info
+   0.403 <-- vector table  0x10000100
+   0.403 <-- stack top     0x20042000
+   0.403 <-- reset         0x100001f7
+   0.403 <-- reset (even)  0x100001f6
+   0.403 <-- gpio in       0xd0000004
+   0.403 <-- led bit       0
+   0.403 <-- gpio_get      0
+   0.804 --> uptime
+   0.805 <-- uptime
+   0.805 <-- dbg readline:129 got uptime
+   0.805 <-- uptime: 14871 ms
+   1.206 --> boot_info
+   1.206 <-- boot_info
+   1.206 <-- dbg readline:129 got boot_info
+   1.207 <-- vector table  0x10000100
+   1.207 <-- stack top     0x20042000
+   1.207 <-- reset         0x100001f7
+   1.207 <-- reset (even)  0x100001f6
+   1.207 <-- gpio in       0xd0000004
+   1.207 <-- led bit       0
+   1.207 <-- gpio_get      0
+   1.608 --> uptime
+   1.608 <-- uptime
+   1.608 <-- dbg readline:129 got uptime
+   1.609 <-- uptime: 15674 ms
+   2.009 --> boot_info
+   2.010 <-- boot_info
+   2.010 <-- dbg readline:129 got boot_info
+   2.010 <-- vector table  0x10000100
+   2.010 <-- stack top     0x20042000
+   2.010 <-- reset         0x100001f7
+   2.010 <-- reset (even)  0x100001f6
+   2.010 <-- gpio in       0xd0000004
+   2.010 <-- led bit       0
+   2.010 <-- gpio_get      0
+   2.411 --> uptime
+   2.412 <-- uptime
+   2.412 <-- dbg readline:129 got uptime
+   2.412 <-- uptime: 16478 ms
+   2.813 --> boot_info
+   2.813 <-- boot_info
+   2.813 <-- dbg readline:129 got boot_info
+   2.813 <-- vector table  0x10000100
+   2.813 <-- stack top     0x20042000
+   2.814 <-- reset         0x100001f7
+   2.814 <-- reset (even)  0x100001f6
+   2.814 <-- gpio in       0xd0000004
+   2.814 <-- led bit       1
+   2.814 <-- gpio_get      1
+итог: отправлено команд 8, принято строк 48
