@@ -27,7 +27,7 @@ bool led_task_set_period_ms(uint32_t period_ms);
 // это внутренняя функция 
 static bool period_elapsed(uint64_t *last_us, uint64_t period_us);
 
-uint get_half_period(void);
+uint led_task_get_period_ms(void);
 
 static led_state_t led_state;
 static uint64_t last_toggle_us = 0;

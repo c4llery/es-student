@@ -21,7 +21,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/profiling
     ${CMAKE_CURRENT_SOURCE_DIR}/stdio-text-protocol
     ${CMAKE_CURRENT_SOURCE_DIR}/api
-    ${CMAKE_CURRENT_SOURCE_DIR}/led-task
+    ${CMAKE_CURRENT_SOURCE_DIR}/led_task
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 

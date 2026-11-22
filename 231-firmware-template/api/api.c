@@ -11,7 +11,7 @@
 #include "api.h"
 #include <errno.h>
 #include <ctype.h>
-#include "led_task.h"
+#include "led-task.h"
 
 // Число без знака из десятичной записи. false — в записи не только цифры
 // или число не помещается в uint32_t.
@@ -91,19 +91,19 @@ void cmd_info(const command_t * cmd)
 
 void cmd_led_enable(const command_t *cmd)
 {
-    printf("led: on, period: %u ms\n", 2 * get_half_period());
+    printf("led: on, period: %u ms\n", led_task_get_period_ms());
     led_task_set_state(LED_STATE_ON);
 }
 
 void cmd_led_disable(const command_t *cmd)
 {
-    printf("led: off, period: %u ms\n", 2 * get_half_period());
+    printf("led: off, period: %u ms\n", led_task_get_period_ms());
     led_task_set_state(LED_STATE_OFF);
 }
 
 void cmd_led_blink(const command_t *cmd)
 {
-    printf("led: blink, period: %u ms\n", 2 * get_half_period());
+    printf("led: blink, period: %u ms\n", led_task_get_period_ms());
     led_task_set_state(LED_STATE_BLINK);
 }
 
@@ -112,7 +112,7 @@ void cmd_led_period(const command_t *command)
     uint32_t period;
     if (command->argc != 1 || !parse_u32(command->argv[0], &period))
     {
-        printf("usage led_period <period_ms>")
+        printf("usage led_period <period_ms>");
         return;
     }
     else if (command->argv[0] <= 0)

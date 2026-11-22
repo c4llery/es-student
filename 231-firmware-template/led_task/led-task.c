@@ -1,9 +1,9 @@
-#include "led_task.h"
+#include "led-task.h"
 #include "pico/stdlib.h"
 
-uint get_half_period(void)
+uint led_task_get_period_ms(void)
 {
-    return half_period_ms;
+    return half_period_ms * 2;
 }
 
 bool period_elapsed(uint64_t *last_us, uint64_t period_us)
