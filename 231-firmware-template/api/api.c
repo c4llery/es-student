@@ -3,7 +3,6 @@
 #include "hardware/regs/addressmap.h"
 #include "hardware/regs/sio.h"
 #include <stdio.h>
-#include "led.h"
 #include "log.h"
 #include "device.h"
 #include <string.h>
@@ -12,6 +11,7 @@
 #include "api.h"
 #include <errno.h>
 #include <ctype.h>
+#include "led_task.h"
 
 // Число без знака из десятичной записи. false — в записи не только цифры
 // или число не помещается в uint32_t.
@@ -89,14 +89,46 @@ void cmd_info(const command_t * cmd)
     device_info();
 }
 
+void cmd_led_enable(const command_t *cmd)
+{
+    printf("led: on, period: %u ms\n", 2 * get_half_period());
+    led_task_set_state(LED_STATE_ON);
+}
 
+void cmd_led_disable(const command_t *cmd)
+{
+    printf("led: off, period: %u ms\n", 2 * get_half_period());
+    led_task_set_state(LED_STATE_OFF);
+}
+
+void cmd_led_blink(const command_t *cmd)
+{
+    printf("led: blink, period: %u ms\n", 2 * get_half_period());
+    led_task_set_state(LED_STATE_BLINK);
+}
+
+void cmd_led_period(const command_t *command)
+{
+    uint32_t period;
+    if (command->argc != 1 || !parse_u32(command->argv[0], &period))
+    {
+        printf("error: period ms must be greater than 0\n");
+        return;
+    }
+    led_task_set_period_ms(period);
+    printf("new period: %u ms\n", period);
+}
 
 const api_command_t commands[] = {
     { "info", "device passport", cmd_info },
     { "calc_pi", "calculate pi: calc_pi [terms]", cmd_calc_pi},
     { "main_time_exec", "superloop iteration: average and maximum", cmd_main_time_exec }, 
     { "main_time_reset", "reset maximum iteration", cmd_main_time_reset },
-    { "uptime", "time since reset", cmd_uptime }
+    { "uptime", "time since reset", cmd_uptime },
+    { "led_enable", "turn led on", cmd_led_enable},
+    { "led_disable", "turn led off", cmd_led_disable},
+    { "led_blink", "led blinking", cmd_led_blink},
+    { "led_period", "set led period: [period_ms]", cmd_led_period},
 };
 
 const uint command_count = sizeof(commands) / sizeof(commands[0]);
