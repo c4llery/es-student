@@ -112,7 +112,12 @@ void cmd_led_period(const command_t *command)
     uint32_t period;
     if (command->argc != 1 || !parse_u32(command->argv[0], &period))
     {
-        printf("error: period ms must be greater than 0\n");
+        printf("usage led_period <period_ms>")
+        return;
+    }
+    else if (command->argv[0] <= 0)
+    {
+        printf("error: period_ms must be greater than 0");
         return;
     }
     led_task_set_period_ms(period);
