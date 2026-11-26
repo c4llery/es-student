@@ -124,6 +124,20 @@ void cmd_led_period(const command_t *command)
     printf("new period: %u ms\n", period);
 }
 
+void cmd_button(const command_t *command)
+{
+    printf("button: ");
+    if (button_task_is_pressed())
+    {
+        printf("pressed\n");
+    }
+    else
+    {
+        printf("released\n");
+    }
+    printf("presses: %u\n", button_task_get_press_count());
+
+}
 const api_command_t commands[] = {
     { "info", "device passport", cmd_info },
     { "calc_pi", "calculate pi: calc_pi [terms]", cmd_calc_pi},
@@ -134,6 +148,7 @@ const api_command_t commands[] = {
     { "led_disable", "turn led off", cmd_led_disable},
     { "led_blink", "led blinking", cmd_led_blink},
     { "led_period", "set led period: [period_ms]", cmd_led_period},
+    { "button", "button_info", cmd_button},
 };
 
 const uint command_count = sizeof(commands) / sizeof(commands[0]);

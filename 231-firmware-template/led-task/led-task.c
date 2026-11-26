@@ -98,3 +98,8 @@ bool led_task_set_period_ms(uint32_t period_ms)
         return true;
     }
 }
+
+void led_task_next_state(void)
+{
+    led_task_set_state((led_task_get_state() + 1) % 3);
+}

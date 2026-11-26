@@ -29,6 +29,7 @@ static bool period_elapsed(uint64_t *last_us, uint64_t period_us);
 
 uint led_task_get_period_ms(void);
 
+void led_task_next_state(void);
 static led_state_t led_state;
 static uint64_t last_toggle_us = 0;
 static uint half_period_ms = 0;
