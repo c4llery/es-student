@@ -12,6 +12,8 @@
 #include <errno.h>
 #include <ctype.h>
 #include "led-task.h"
+#include "pi-task.h"
+#include "button-task.h"
 
 // Число без знака из десятичной записи. false — в записи не только цифры
 // или число не помещается в uint32_t.
@@ -41,7 +43,8 @@ double calc_pi(uint terms)
     double sum = 0.0;
     double sign = 1.0;
 
-    for (int k = 0; k < terms; k++) {
+    for (int k = 0; k < terms; k++)
+    {
         // Прибавить очередной член ряда: ±1 / (2k + 1)
         sum += sign / (2.0 * k + 1.0);
         sign = -sign;
@@ -51,8 +54,8 @@ double calc_pi(uint terms)
     return 4.0 * sum;
 }
 
-volatile double pi_result;
-void cmd_calc_pi(const command_t * command)
+
+void cmd_calc_pi(const command_t *command)
 {
     uint32_t pi_terms;
     if (command->argc != 1 || !parse_u32(command->argv[0], &pi_terms))
@@ -68,23 +71,23 @@ void cmd_calc_pi(const command_t * command)
     printf("time: %llu ms\n", spent_us / 1000);
 }
 
-void cmd_main_time_exec(const command_t * cmd)
+void cmd_main_time_exec(const command_t *cmd)
 {
     printf("iteration avg %.2f us, max %u us\n", profiling_avg_us(), (unsigned)profiling_max_us());
 }
 
-void cmd_main_time_reset(const command_t * cmd)
+void cmd_main_time_reset(const command_t *cmd)
 {
     profiling_reset_max();
     printf("max reset\n");
 }
 
-void cmd_uptime(const command_t * cmd)
+void cmd_uptime(const command_t *cmd)
 {
     printf("uptime: %.2f\n", time_us_64() / 1000.);
 }
 
-void cmd_info(const command_t * cmd)
+void cmd_info(const command_t *cmd)
 {
     device_info();
 }
@@ -112,12 +115,12 @@ void cmd_led_period(const command_t *command)
     uint32_t period;
     if (command->argc != 1 || !parse_u32(command->argv[0], &period))
     {
-        printf("usage led_period <period_ms>");
+        printf("usage led_period <period_ms>\n");
         return;
     }
     else if (command->argv[0] <= 0)
     {
-        printf("error: period_ms must be greater than 0");
+        printf("error: period_ms must be greater than 0\n");
         return;
     }
     led_task_set_period_ms(period);
@@ -136,19 +139,63 @@ void cmd_button(const command_t *command)
         printf("released\n");
     }
     printf("presses: %u\n", button_task_get_press_count());
+}
 
+void cmd_pi_start(const command_t *command)
+{
+    uint32_t pi_terms;
+    if (command->argc == 0)
+    {
+        pi_terms = 1000000;
+    }
+    else if (command->argc > 1 || !parse_u32(command->argv[0], &pi_terms))
+    {
+        printf("error: usage pi_start [<terms>]\n");
+        printf("%u\n", command->argc);
+        return;
+    }
+    else if (command->argv[0] <= 0)
+    {
+        printf("error: terms must be greater than 0\n");
+        return;
+    }
+    pi_task_start(pi_terms);
+}
+
+void cmd_pi(const command_t *command)
+{
+    uint64_t exec_time_us;
+    double result;
+    bool pi_is_available = pi_task_get_result(&result, &exec_time_us);
+    if (pi_is_available)
+    {
+        printf("pi: %.8f in %llu ms\n", result, exec_time_us);
+    }
+    else
+    {
+        if (pi_task_get_state() == PI_RUNNING)
+        {
+            printf("pi: running\n");
+        }
+        else if (pi_task_get_state() == PI_NOT_LAUNCHED)
+        {
+            printf("pi: not running\n");
+        }
+    }
 }
 const api_command_t commands[] = {
-    { "info", "device passport", cmd_info },
-    { "calc_pi", "calculate pi: calc_pi [terms]", cmd_calc_pi},
-    { "main_time_exec", "superloop iteration: average and maximum", cmd_main_time_exec }, 
-    { "main_time_reset", "reset maximum iteration", cmd_main_time_reset },
-    { "uptime", "time since reset", cmd_uptime },
-    { "led_enable", "turn led on", cmd_led_enable},
-    { "led_disable", "turn led off", cmd_led_disable},
-    { "led_blink", "led blinking", cmd_led_blink},
-    { "led_period", "set led period: [period_ms]", cmd_led_period},
-    { "button", "button_info", cmd_button},
+    {"info", "device passport", cmd_info},
+    {"calc_pi", "calculate pi: calc_pi [terms]", cmd_calc_pi},
+    {"main_time_exec", "superloop iteration: average and maximum", cmd_main_time_exec},
+    {"main_time_reset", "reset maximum iteration", cmd_main_time_reset},
+    {"uptime", "time since reset", cmd_uptime},
+    {"led_enable", "turn led on", cmd_led_enable},
+    {"led_disable", "turn led off", cmd_led_disable},
+    {"led_blink", "led blinking", cmd_led_blink},
+    {"led_period", "set led period: [period_ms]", cmd_led_period},
+    {"button", "button_info", cmd_button},
+    {"pi_start", "start pi computing: [<terms>]", cmd_pi_start},
+    {"pi", "computation info", cmd_pi},
 };
 
 const uint command_count = sizeof(commands) / sizeof(commands[0]);
@@ -166,7 +213,7 @@ void api_handle(const command_t *command)
         {
             printf("%-20s %s\n", commands[i].name, commands[i].help);
         }
-    }       
+    }
     else
     {
         bool found = 0;
@@ -182,5 +229,5 @@ void api_handle(const command_t *command)
         {
             printf("error: unknown command '%s', try help\n", command->name);
         }
-    }   
+    }
 }
