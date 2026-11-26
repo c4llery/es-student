@@ -5,10 +5,30 @@
 #include "hardware/regs/sio.h"
 #include "led-task.h"
 
+const uint debounce_time_mks = 20;
+
+typedef enum
+{
+    BUTTON_PRESSED,
+    BUTTON_UNPRESSED, 
+    BUTTON_PRESSED_UNSURE,
+    BUTTON_UNPRESSED_UNSURE
+} button_state_t;
+
+static button_state_t button_state;
+
+
 const uint BUTTON_PIN = 15;
 const uint DEBOUNCE_MS = 20;
 static uint32_t previous_toggle_us = 0;
 uint32_t now_us = 0;
+
+static void button_task_set_state(button_state_t state)
+
+{
+    button_state = state;
+}
+
 void button_task_init(void)
 {
     gpio_init(BUTTON_PIN);
@@ -17,10 +37,6 @@ void button_task_init(void)
     button_task_set_state(BUTTON_UNPRESSED);
 }
 
-void button_task_set_state(button_state_t state)
-{
-    button_state = state;
-}
 
 uint button_task_get_press_count(void)
 {
@@ -49,7 +65,7 @@ void button_task_handle(void)
         break;
     case BUTTON_PRESSED_UNSURE:
         now_us = time_us_32();
-        if ((now_us - previous_toggle_us) * 1000 >= 20 && state)
+        if ((now_us - previous_toggle_us) * 1000 >= debounce_time_mks && state)
         {
             button_task_set_state(BUTTON_PRESSED);
             led_task_next_state();
@@ -70,7 +86,7 @@ void button_task_handle(void)
 
     case BUTTON_UNPRESSED_UNSURE:
         now_us = time_us_32();
-        if ((now_us - previous_toggle_us) * 1000 >= 20 && !state)
+        if ((now_us - previous_toggle_us) * 1000 >= debounce_time_mks && !state)
         {
             button_task_set_state(BUTTON_UNPRESSED);
         }
