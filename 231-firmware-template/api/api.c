@@ -38,39 +38,6 @@ static bool parse_u32(const char *text, uint32_t *value)
     return true;
 }
 
-double calc_pi(uint terms)
-{
-    double sum = 0.0;
-    double sign = 1.0;
-
-    for (int k = 0; k < terms; k++)
-    {
-        // Прибавить очередной член ряда: ±1 / (2k + 1)
-        sum += sign / (2.0 * k + 1.0);
-        sign = -sign;
-    }
-
-    // Сумма ряда равна π/4
-    return 4.0 * sum;
-}
-
-
-void cmd_calc_pi(const command_t *command)
-{
-    uint32_t pi_terms;
-    if (command->argc != 1 || !parse_u32(command->argv[0], &pi_terms))
-    {
-        printf("error: usage calc_pi <pi_terms>\n");
-        return;
-    }
-    uint64_t start_us = time_us_64();
-    pi_result = calc_pi(pi_terms);
-    uint64_t spent_us = time_us_64() - start_us;
-
-    printf("pi: %.8f\n", pi_result);
-    printf("time: %llu ms\n", spent_us / 1000);
-}
-
 void cmd_main_time_exec(const command_t *cmd)
 {
     printf("iteration avg %.2f us, max %u us\n", profiling_avg_us(), (unsigned)profiling_max_us());
@@ -144,6 +111,11 @@ void cmd_button(const command_t *command)
 void cmd_pi_start(const command_t *command)
 {
     uint32_t pi_terms;
+    if (pi_task_get_state() == PI_RUNNING)
+    {
+        printf("error: pi is busy\n");
+        return;
+    }
     if (command->argc == 0)
     {
         pi_terms = 1000000;
@@ -185,7 +157,6 @@ void cmd_pi(const command_t *command)
 }
 const api_command_t commands[] = {
     {"info", "device passport", cmd_info},
-    {"calc_pi", "calculate pi: calc_pi [terms]", cmd_calc_pi},
     {"main_time_exec", "superloop iteration: average and maximum", cmd_main_time_exec},
     {"main_time_reset", "reset maximum iteration", cmd_main_time_reset},
     {"uptime", "time since reset", cmd_uptime},
