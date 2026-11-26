@@ -5,7 +5,7 @@
 #include "hardware/regs/sio.h"
 #include "led-task.h"
 
-const uint debounce_time_mks = 20;
+const uint debounce_time_us = 20000;
 
 typedef enum
 {
@@ -65,7 +65,7 @@ void button_task_handle(void)
         break;
     case BUTTON_PRESSED_UNSURE:
         now_us = time_us_32();
-        if ((now_us - previous_toggle_us) * 1000 >= debounce_time_mks && state)
+        if ((now_us - previous_toggle_us) >= debounce_time_us && state)
         {
             button_task_set_state(BUTTON_PRESSED);
             led_task_next_state();
@@ -86,7 +86,7 @@ void button_task_handle(void)
 
     case BUTTON_UNPRESSED_UNSURE:
         now_us = time_us_32();
-        if ((now_us - previous_toggle_us) * 1000 >= debounce_time_mks && !state)
+        if ((now_us - previous_toggle_us) >= debounce_time_us && !state)
         {
             button_task_set_state(BUTTON_UNPRESSED);
         }
